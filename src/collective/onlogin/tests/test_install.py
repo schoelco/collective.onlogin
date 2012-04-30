@@ -31,7 +31,7 @@ class InstallTests(unittest.TestCase):
                 break
 
         # test our action settings
-        self.assertEqual(a.title, 'Onlogin')
+        self.assertEqual(a.title, 'Onlogin Settings')
         self.assertEqual(a.appId, 'collective.onlogin')
         self.assertEqual(a.category, 'Products')
         self.assertEqual(a.condition, '')

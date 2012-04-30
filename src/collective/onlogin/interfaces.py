@@ -9,7 +9,7 @@ _ = MessageFactory('collective.onlogin')
 class IOnloginSettings(Interface):
 
     first_login_redirect_enabled = schema.Bool(
-        title=_(u"Enable redirect on first login."),
+        title=_(u"Enable redirect on first login"),
         description=_(u"First login redirect is of higher priority than "
             "redirect on every login. If disabled, then every login redirect "
             "will be executed even for first time login."),
@@ -24,15 +24,15 @@ class IOnloginSettings(Interface):
         default=u'string:${portal_url}/@@personal-information')
 
     first_login_redirect_ignore_came_from = schema.Bool(
-        title=_(u"Ignore came_from parameter on first login."),
+        title=_(u"Ignore came_from parameter on first login"),
         description=_(u"By default Plone redirects user to last visited page "
             "after login. Here you can disable this behavior and always "
             "redirect to above entered url."),
         required=False,
         default=True)
-                                
+
     login_redirect_enabled = schema.Bool(
-        title=_(u"Enable redirect on login."),
+        title=_(u"Enable redirect on login"),
         description=_(u"Login redirect is happening on every user login and "
             "does not happen on user first login in case First Login Redirect "
             "is enabled on this form above."),
@@ -46,7 +46,7 @@ class IOnloginSettings(Interface):
         default=u'string:${portal_url}/dashboard')
 
     login_redirect_ignore_came_from = schema.Bool(
-        title=_(u"Ignore came_from parameter on login."),
+        title=_(u"Ignore came_from parameter on login"),
         description=_(u"By default Plone redirects user to last visited page "
             "after login. Here you can disable this behavior and always "
             "redirect to above entered url."),

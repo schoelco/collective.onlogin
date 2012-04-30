@@ -6,7 +6,7 @@ from collective.onlogin.interfaces import IOnloginSettings, _
 class OnloginSettingsEditForm(controlpanel.RegistryEditForm):
 
     schema = IOnloginSettings
-    label = _(u"Onlogin settings")
+    label = _(u"Onlogin Settings")
     description = _(u"")
 
     def updateFields(self):
@@ -18,4 +18,3 @@ class OnloginSettingsEditForm(controlpanel.RegistryEditForm):
 
 class OnloginSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
     form = OnloginSettingsEditForm
-    

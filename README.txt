@@ -1,75 +1,116 @@
-.. contents::
-
 Introduction
 ============
 
-This package provides additional functionality of setting the redirecting 
-member users when they are login in the portal. In our case we decide to
-devide the login user into two parts. The first part is consist of members 
-which log in first time and the rest one - the number of users in each time
-when they log in the portal.
-
-Installation
-============
-
-To install, you must have a enabled package in your buildout.
-For example::
-
-    [buildout]
-    extends =
-        http://pypi.python.org/pypi/collective.onlogin
+If you ever wanted to redirect your just logged in user, let's say, to his/her personal dashboard, or any other dedicated page, then this package is here exactly for these purposes.
 
 
-Usage
-=====
+Overview
+--------
 
-Don't forget to activate the package and enter on the following page:
-${yourPortalHomePage}/@@onlogin-settings
+It allows you to configure where to redirect your site users upon login.
 
-To enable the redirecting the users on initial login you must set
-the following checkbox. "... redirect expression" is the field which has the TAL
-condition so you may knew how to write the needed page. In the basic type you
-may enter: "string:google.com" to redirect the user to the Google site. If you
-need to redirect the user to the specific page of your portal:
-"string:${portal_url}/dashboard"
-The checkbox of ignoring came_from attribute you may need when you
-do not want to redirecting on the page where the user were came from.
+Also you have an option to provide a different redirect for first-time logins.
+This feature may be useful in case you want to ask your first time login users to enter their profile information and/or set personal preferences.
 
-In such the same setting is in the second part of settings.
-This settings are need in case when you may to redirect the log in member on
-every login.
+The ``collective.onlogin`` package provides Plone control panel where you can enable redirects and set exact URLs where to redirect your users to.
 
-"Enable redirect on first login" checkbox is enabled/disabled the redirecting of
-users at the page in "First login redirect expression" when they login in first
-time.
-By default is True.
-
-"First login redirect expression" is the field with TAL Expression. Here you may
-write the page at which you want redirecting users login in first time.
-By default is "string:${portal_url}/@@personal-information".
-
-"Ignore came_from parameter on first login" is parameter which may you disable
-a Plone default redirecting when the came_from parameter is not None.
-By default is True.
-
-"Enable redirect on login" checkbox is enabled/disabled the redirecting of
-users at the page in "Login redirect expression" on every login on portal.
-By default is True.
-
-"Login redirect expression" is the field with TAL Expression. Here you may
-write the page at which you want redirecting users every times when they login
-the portal.
-By default is "string:${portal_url}/dashboard".
-
-"Ignore came_from parameter on login" is parameter which may you disable
-a Plone default redirecting when the came_from parameter is not None.
-By default is False.
 
 Compatibility
+-------------
+
+This add-on was tested for Plone 4.1 series.
+
+
+Installation
+------------
+
+* to add the package to your Zope instance, please, follow the instructions found inside the
+  ``docs/INSTALL.txt`` file
+* then restart your Zope instance and install the ``collective.onlogin``
+  package from within the ``portal_quickinstaller`` tool
+
+
+Configuration
+-------------
+
+The package provides configuration panel where you can manage your redirects.
+There you have 2 sections:
+
+* for first time logins,
+* and for all next user logins.
+
+First time login redirects are of higher priority than all the next time
+redirects so that the latter will happen only if user logged in for second time
+or if first-time login redirect is disabled.
+
+Available configuration options:
+
+* ``Enable redirect on first login``. Whether to override default Plone redirect
+  on first-time user login. If enabled, it takes precedence over 'next time'
+  user login redirects.
+* ``First login redirect expression``. TAL Expression for first time login user
+  redirect. It should return absolute or relative URL to internal Plone site
+  page or absolute URL to any other external web resource. E.g. to redirect to
+  external site: ''string:http://google.com''. Default value is to redirect to
+  user personal information form within Plone site:
+  ''string:${portal_url}/@@personal-information''.
+* ``Ignore came_from parameter on first login``. Plone uses came_from query
+  parameter in some URLs to be able to redirect back to previously visited page.
+  It's usually useful for login procedure. Still you're able to ignore this
+  default Plone functionality by ticking this checkbox and ensure user is always
+  redirected to a URL you assigned manually in expression mentioned above.
+* ``Enable redirect on login``. Override default Plone redirect on user login.
+  If user logins for first time then ``First login redirect expression`` will
+  take precedence in case first-time redirect is enabled.
+* ``Login redirect expression``. TAL Expression for login user redirect. It
+  should return absolute or relative URL to internal Plone site page or absolute
+  URL to any other external web resource.  Default value is to redirect to
+  user personal dashboard: ''string:${portal_url}/@@dashboard''. E.g. to
+  redirect user to his/her profile page:
+  ''string:${portal_url}/author/${member/getId}''.
+* ``Ignore came_from parameter on login``. Ignore default Plone redirect to
+  previously visited page before user proceeded to login procedure. Tick this
+  checkbox to ensure your manually set redirect is of higher priority over Plone
+  'came_from' redirect.
+
+
+Notes
+-----
+
+In order to make custom redirect event handlers work on user login we had to
+disable ajax submits of Plone login overlay. Thus we still have login overlay
+but form post is happening as a plain browser request reloading whole page.
+
+
+Live Examples
 =============
 
-Plone 4
+* http://www.choosehelp.com/
 
-Authors
+
+Credits
 =======
 
+
+Companies
+---------
+
+|martinschoel|_
+
+* `Martin Schoel Web Productions <http://www.martinschoel.com/>`_
+* `Contact us <mailto:python@martinschoel.com>`_
+
+
+Authors
+-------
+
+* Vitaliy Podoba <vitaliy@martinschoel.com>
+* Andriy Diedyk <diedyk.andriy@gmail.com>
+
+
+Contributors
+------------
+
+
+.. |martinschoel| image:: http://cache.martinschoel.com/img/logos/MS-Logo-white-200x100.png
+.. _martinschoel: http://www.martinschoel.com/
