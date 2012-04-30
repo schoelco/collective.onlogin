@@ -1,0 +1,6 @@
+<layers>
+    <layer
+        name="collective.onlogin.layer"
+        interface="collective.onlogin.interfaces.IOnloginLayer"
+        />
+</layers>

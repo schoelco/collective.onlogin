@@ -1,0 +1,64 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
+    i18n_domain="collective.onlogin">
+
+
+  <five:registerPackage package="." initialize=".initialize" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.onlogin"
+      directory="profiles/default"
+      description="Installs the collective.onlogin package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="collective.onlogin Uninstall Profile"
+      directory="profiles/uninstall"
+      description="Removes the collective.onlogin package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      />
+
+  <!-- -*- extra stuff goes here -*- -->
+
+  <subscriber
+      for="*
+           Products.PlonePAS.interfaces.events.IUserLoggedInEvent"
+      handler=".events.userLogin"
+      />
+
+  <subscriber
+      for="*
+           Products.PlonePAS.interfaces.events.IUserInitialLoginInEvent"
+      handler=".events.userInitialLogin"
+      />
+
+
+
+  <include package="plone.app.registry" />
+
+  <!-- Register Layer -->
+  <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
+
+
+  <!-- Control panel -->
+  <browser:page
+      name="onlogin-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.OnloginSettingsControlPanel"
+      permission="cmf.ManagePortal"
+      layer=".interfaces.IOnloginLayer"
+      />
+  
+
+
+  
+</configure>

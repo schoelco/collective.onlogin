@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<object name="portal_skins" meta_type="Plone Skins Tool">
+ <object name="collective_onlogin" meta_type="Filesystem Directory View"
+         directory="collective.onlogin:skins/collective_onlogin"/>
+  <skin-path name="*">
+    <layer name="collective_onlogin" insert-after="custom"/>
+  </skin-path>
+</object>

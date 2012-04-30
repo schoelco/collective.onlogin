@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<registry>
+ <record
+    name="collective.onlogin.interfaces.IOnloginSettings.first_login_redirect_enabled"
+    delete="True" />
+ <record
+    name="collective.onlogin.interfaces.IOnloginSettings.first_login_redirect_expr"
+    delete="True"/>
+ <record
+    name="collective.onlogin.interfaces.IOnloginSettings.first_login_redirect_ignore_came_from"
+    delete="True"/>
+ <record
+    name="collective.onlogin.interfaces.IOnloginSettings.login_redirect_enabled"
+    delete="True"/>
+ <record
+    name="collective.onlogin.interfaces.IOnloginSettings.login_redirect_expr"
+    delete="True"/>
+ <record
+    name="collective.onlogin.interfaces.IOnloginSettings.login_redirect_ignore_came_from"
+    delete="True"/>
+</registry>
