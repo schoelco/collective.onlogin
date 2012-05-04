@@ -1,31 +1,35 @@
 Introduction
 ============
 
-If you ever wanted to redirect your just logged in user, let's say, to his/her personal dashboard, or any other dedicated page, then this package is here exactly for these purposes.
+If you ever wanted to redirect a user right after logging in (e.g. to his/her
+personal account dashboard or any other dedicated page) then this package here
+is made exactly for this purpose.
 
 
 Overview
 --------
 
-It allows you to configure where to redirect your site users upon login.
+It allows you to configure where to redirect a site user upon logging in.
 
-Also you have an option to provide a different redirect for first-time logins.
-This feature may be useful in case you want to ask your first time login users to enter their profile information and/or set personal preferences.
+You also have an option to provide a different redirect for first-time logins.
+This feature may be useful in case you want to ask your first time login users
+to enter their profile information and/or to set personal preferences.
 
-The ``collective.onlogin`` package provides Plone control panel where you can enable redirects and set exact URLs where to redirect your users to.
+The ``collective.onlogin`` package provides a Plone control panel where you can
+enable redirects as well as set exact URLs where to redirect your users to.
 
 
 Compatibility
 -------------
 
-This add-on was tested for Plone 4.1 series.
+This add-on was tested for the Plone 4.1 series.
 
 
 Installation
 ------------
 
-* to add the package to your Zope instance, please, follow the instructions found inside the
-  ``docs/INSTALL.txt`` file
+* to add the package to your Zope instance, please, follow the instructions
+  found inside the ``docs/INSTALL.txt`` file
 * then restart your Zope instance and install the ``collective.onlogin``
   package from within the ``portal_quickinstaller`` tool
 
@@ -33,15 +37,15 @@ Installation
 Configuration
 -------------
 
-The package provides configuration panel where you can manage your redirects.
+The package provides a configuration panel where you can manage your redirects.
 There you have 2 sections:
 
-* for first time logins,
+* for first-time logins,
 * and for all next user logins.
 
-First time login redirects are of higher priority than all the next time
-redirects so that the latter will happen only if user logged in for second time
-or if first-time login redirect is disabled.
+First-time login redirects are of higher priority than all the next time
+redirects so that the latter will happen only if a user logged in for the second
+time or if first-time login redirect is disabled.
 
 Available configuration options:
 
@@ -77,9 +81,10 @@ Available configuration options:
 Notes
 -----
 
-In order to make custom redirect event handlers work on user login we had to
-disable ajax submits of Plone login overlay. Thus we still have login overlay
-but form post is happening as a plain browser request reloading whole page.
+In order to make the custom redirect event handlers work on user login we had to
+disable ajax submits of the default Plone login overlay. Thus we still have a
+login overlay but form post is happening as a plain browser request reloading
+the whole page.
 
 
 Live Examples
