@@ -2,6 +2,7 @@ import sys
 import logging
 
 from zope.component import getUtility
+from zope.site.hooks import getSite
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
@@ -38,7 +39,7 @@ def userLogin(obj, event):
         return
 
     # get portal object
-    portal = getToolByName(obj, 'portal_url').getPortalObject()
+    portal = getSite()
         
     # check if we have an access to request object
     request = getattr(portal, 'REQUEST', None)
@@ -86,7 +87,7 @@ def userInitialLogin(obj, event):
         return
 
     # get portal object
-    portal = getToolByName(obj, 'portal_url').getPortalObject()
+    portal = getSite()
 
     # check if we have an access to request object
     request = getattr(portal, 'REQUEST', None)
