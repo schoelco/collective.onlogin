@@ -1,3 +1,6 @@
+import sys
+import logging
+
 from zope.component import getUtility
 
 from Products.CMFCore.utils import getToolByName
@@ -7,6 +10,13 @@ from Products.PlonePAS.interfaces.events import IUserInitialLoginInEvent
 
 from plone.registry.interfaces import IRegistry
 
+logger = logging.getLogger('collective.onlogin')
+def logException(msg, context=None):
+    logger.exception(msg)
+    if context is not None:
+        error_log = getattr(context, 'error_log', None)
+        if error_log is not None:
+            error_log.raising(sys.exc_info())
 
 def userLogin(obj, event):
     """Redirects logged in users to personal dashboard"""
@@ -55,6 +65,7 @@ def userLogin(obj, event):
     try:
         url = expr(econtext)
     except Exception, e:
+        logException(u'Error during user login redirect')
         return
     else:
         # check if came_from is not empty, then clear it up, otherwise further
@@ -103,6 +114,7 @@ def userInitialLogin(obj, event):
     try:
         url = expr(econtext)
     except Exception, e:
+        logException(u'Error during user initial login redirect')
         return
     else:
         # check if came_from is not empty, then clear it up, otherwise further
