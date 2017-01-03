@@ -23,11 +23,13 @@ def userLogin(obj, event):
     """Redirects logged in users to personal dashboard"""
     # get registry where we keep our configuration
     registry = getUtility(IRegistry)
-
+    logger.info('userlogin')
     # check if we need to redirect at all
     do_redirect = registry.get(
         'collective.onlogin.interfaces.IOnloginSettings.login_redirect_enabled')
+    logger.info('do_redirect {}'.format(do_redirect))
     if not do_redirect:
+        logger.info('audi5000')
         return
 
     # do not redirect if user initial login is set and our current event
@@ -36,6 +38,7 @@ def userLogin(obj, event):
     if registry.get('collective.onlogin.interfaces.IOnloginSettings.' \
        'first_login_redirect_enabled') and \
        IUserInitialLoginInEvent.providedBy(event):
+        logger.info('audi5000')
         return
 
     # get portal object
@@ -43,7 +46,9 @@ def userLogin(obj, event):
         
     # check if we have an access to request object
     request = getattr(portal, 'REQUEST', None)
+    logger.info('request {}'.format(len(request)))
     if not request:
+        logger.info('audi5000')
         return
 
     # check if we need to ignore came_from variable
@@ -80,10 +85,14 @@ def userInitialLogin(obj, event):
     """Redirects initially logged in users to getting started wizard"""
     registry = getUtility(IRegistry)
 
+    logger.info('initial login')
     # check if we need to redirect at all
     do_redirect = registry.get('collective.onlogin.interfaces.' \
         'IOnloginSettings.first_login_redirect_enabled')
+
+    logger.info('do_redirect {}'.format(do_redirect))
     if not do_redirect:
+        logger.info('audi5000')
         return
 
     # get portal object
@@ -91,7 +100,10 @@ def userInitialLogin(obj, event):
 
     # check if we have an access to request object
     request = getattr(portal, 'REQUEST', None)
+
+    logger.info('request {}'.format(len(request)))
     if not request:
+        logger.info('audi5000')
         return
 
     # check if we need to ignore came_from variable
@@ -99,14 +111,17 @@ def userInitialLogin(obj, event):
         'collective.onlogin.interfaces.IOnloginSettings.' \
         'first_login_redirect_ignore_came_from')
     # when we try to log from logged_out page the came_from doesn't bin canceled
+    logger.info('ignore_came_from {}'.format(ignore_came_from))
     if not ignore_came_from and request.get('came_from'):
+        logger.info('audi5000')
         return
 
     # check if we got redirect expression
     redirect_expr = registry.get('collective.onlogin.interfaces.' \
         'IOnloginSettings.first_login_redirect_expr')
-
+    logger.info('redirect_expr {}'.format(redirect_expr))
     if not redirect_expr:
+        logger.info('audi5000')
         return
 
     # now complile and render our expression to url
@@ -114,6 +129,7 @@ def userInitialLogin(obj, event):
     econtext = getExprContext(portal, portal)
     try:
         url = expr(econtext)
+        logger.info('url {}'.format(url))
     except Exception, e:
         logException(u'Error during user initial login redirect')
         return
