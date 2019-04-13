@@ -30,6 +30,7 @@ setup(name='collective.onlogin',
           'setuptools',
           'plone.app.registry',
           # -*- Extra requirements: -*-
+          'six',
       ],
       entry_points="""
       # -*- Entry points: -*-
