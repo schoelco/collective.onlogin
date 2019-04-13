@@ -70,7 +70,7 @@ def userLogin(obj, event):
     econtext = getExprContext(portal, portal)
     try:
         url = expr(econtext)
-    except Exception, e:
+    except Exception:
         logException(u'Error during user login redirect')
         return
     else:
@@ -130,7 +130,7 @@ def userInitialLogin(obj, event):
     try:
         url = expr(econtext)
         logger.info('url {}'.format(url))
-    except Exception, e:
+    except Exception:
         logException(u'Error during user initial login redirect')
         return
     else:
