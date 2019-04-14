@@ -1,23 +1,16 @@
-import sys
 import logging
+import sys
 
+from collective.onlogin.adapters import logException
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.Expression import Expression
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.PloneBaseTool import getExprContext
+from Products.PlonePAS.interfaces.events import IUserInitialLoginInEvent
 from zope.component import getUtility
 from zope.site.hooks import getSite
 
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.Expression import Expression
-from Products.CMFPlone.PloneBaseTool import getExprContext
-from Products.PlonePAS.interfaces.events import IUserInitialLoginInEvent
-
-from plone.registry.interfaces import IRegistry
-
 logger = logging.getLogger('collective.onlogin')
-def logException(msg, context=None):
-    logger.exception(msg)
-    if context is not None:
-        error_log = getattr(context, 'error_log', None)
-        if error_log is not None:
-            error_log.raising(sys.exc_info())
 
 def userLogin(obj, event):
     """Redirects logged in users to personal dashboard"""
