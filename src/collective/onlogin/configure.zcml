@@ -53,9 +53,6 @@
 
   <include package="plone.app.registry" />
 
-  <!-- Register Layer -->
-  <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
-
 
   <!-- Control panel -->
   <browser:page

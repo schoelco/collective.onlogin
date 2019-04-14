@@ -1,4 +1,4 @@
-import unittest2 as unittest
+import unittest
 
 from zope.component import getUtility
 
@@ -11,19 +11,28 @@ from collective.onlogin.testing import COLLECTIVE_ONLOGIN_INTEGRATION_TESTING
 from collective.onlogin.interfaces import IOnloginLayer
 
 
+try:
+    from Products.CMFPlone.utils import get_installer
+except ImportError:
+    get_installer = None
+
+
 class InstallTests(unittest.TestCase):
 
     layer = COLLECTIVE_ONLOGIN_INTEGRATION_TESTING
 
+    def setUp(self):
+        self.portal = self.layer['portal']
+
     def test_browserlayer(self):
         # checking if our IOnloginLayer in the list of installed layers
-        self.failUnless(IOnloginLayer in utils.registered_layers())
+        self.assertIn(IOnloginLayer, utils.registered_layers())
         
     def test_controlpanel(self):
-        cp_tool = getToolByName(self.layer['portal'], 'portal_controlpanel')
+        cp_tool = getToolByName(self.portal, 'portal_controlpanel')
 
         # check if our action is added
-        self.failIf('onlogin' not in [a.id for a in cp_tool.listActions()])
+        self.assertIn('onlogin', [a.id for a in cp_tool.listActions()])
 
         # get our action out from actions list by id
         for a in cp_tool.listActions():
@@ -38,7 +47,7 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(a.action.text,
             'string:${portal_url}/@@onlogin-settings')
         self.assertEqual(a.visible, True)
-        self.failIf('Manage portal' not in a.permissions)
+        self.assertIn('Manage portal', a.permissions)
 
     def test_default_registry(self):
         registry = getUtility(IRegistry)
@@ -59,33 +68,13 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(False, registry.get('collective.onlogin.interfaces.' \
             'IOnloginSettings.login_redirect_ignore_came_from'))
 
-    def test_skins(self):
-        skins_tool = getToolByName(self.layer['portal'], 'portal_skins')
-
-        # check if we got registered Directory Views
-        self.failIf('collective_onlogin' not in skins_tool.objectIds())
-
-        # check if layers are added to our skin selection in Plone Default
-        layers_default = skins_tool._getSelections()['Plone Default'].split(',')
-        self.failIf('collective_onlogin' not in layers_default)
-
-        # check layers order
-        idx = lambda name: layers_default.index(name)
-        self.assertEqual(idx('collective_onlogin')-1, idx('custom'))
-
-        # check if layers are added to our skin selection in Sunburst Theme
-        layers_sunburst = skins_tool._getSelections()['Sunburst Theme']. \
-            split(',')
-        self.failIf('collective_onlogin' not in layers_sunburst)
-
-        # check layers order
-        idx = lambda name: layers_sunburst.index(name)
-        self.assertEqual(idx('collective_onlogin')-1, idx('custom'))
-
     def test_uninstall_registry(self):
+        if get_installer:
+            self.installer = get_installer(self.portal, self.layer['request'])
+        else:
+            self.installer = self.portal.get_tool('portal_quickinstaller')
         # uninstall collective.onlogin product
-        self.layer['portal'].portal_quickinstaller.uninstallProducts(products=
-            ['collective.onlogin'])
+        self.installer.uninstall_product('collective.onlogin')
 
         registry = getUtility(IRegistry)
 
@@ -104,21 +93,20 @@ class InstallTests(unittest.TestCase):
             'IOnloginSettings.login_redirect_ignore_came_from'))
 
         # checking if our IOnloginLayer not in the list of installed layers
-        self.failUnless(IOnloginLayer not in utils.registered_layers())
+        self.assertNotIn(IOnloginLayer, utils.registered_layers())
 
         # checking if our onlogin's skin is disabled
         # check if we got unregistered Directory Views
-        skins_tool = getToolByName(self.layer['portal'], 'portal_skins')
-        #import pdb; pdb.set_trace()
-        self.failIf('collective_onlogin' in skins_tool.objectIds())
-        self.failIf("collective_onlogin" in
+        skins_tool = getToolByName(self.portal, 'portal_skins')
+        self.assertNotIn('collective_onlogin', skins_tool.objectIds())
+        self.assertNotIn("collective_onlogin",
             skins_tool._getSelections()['Plone Default'].split(','))
             
 
         # checking if our onlogin's control_panel disabled
         # check if our onlogin action is disbranched
-        self.failIf('onlogin' in [a.id for a in getToolByName(self.layer[
-            'portal'], 'portal_controlpanel').listActions()])
+        self.assertNotIn('onlogin', [a.id for a in getToolByName(self.portal,
+            'portal_controlpanel').listActions()])
 
 def test_suite():
     suite = unittest.TestSuite()
