@@ -22,16 +22,16 @@ enable redirects as well as set exact URLs where to redirect your users to.
 Compatibility
 -------------
 
-This add-on was tested for the Plone 4.1 series.
+This add-on was tested for the Plone 5 series.
 
 
 Installation
 ------------
 
-* to add the package to your Zope instance, please, follow the instructions
+* to add the package to your Zope instance, please follow the instructions
   found inside the ``docs/INSTALL.txt`` file
 * then restart your Zope instance and install the ``collective.onlogin``
-  package from within the ``portal_quickinstaller`` tool
+  package from the Add-ons page of the Plone control panel.
 
 
 Configuration

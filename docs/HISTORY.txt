@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.0 - April 15, 2019
+-----------------
+
+- Compatible with Plone > 5.x, Python 2.7, 3.6, 3.7.
+  [fulv]
+
 1.0 - May 4, 2012
 -----------------
 
