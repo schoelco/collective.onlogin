@@ -1,7 +1,5 @@
-import logging
-import sys
-
-from collective.onlogin.adapters import logException
+from collective.onlogin import logger
+from collective.onlogin import logException
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
@@ -10,7 +8,6 @@ from Products.PlonePAS.interfaces.events import IUserInitialLoginInEvent
 from zope.component import getUtility
 from zope.site.hooks import getSite
 
-logger = logging.getLogger('collective.onlogin')
 
 def userLogin(obj, event):
     """Redirects logged in users to personal dashboard"""

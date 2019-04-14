@@ -1,6 +1,5 @@
-import logging
-import sys
-
+from collective.onlogin import logger
+from collective.onlogin import logException
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
@@ -11,7 +10,6 @@ from zope.interface import implementer
 from zope.site.hooks import getSite
 
 
-logger = logging.getLogger('collective.onlogin')
 outahere = 'audi5000'
 settings = 'collective.onlogin.interfaces.IOnloginSettings.'
 redirect_enabled = settings+'login_redirect_enabled' 
@@ -22,13 +20,6 @@ redirect_expr    = settings+'login_redirect_expr'
 first_expr       = settings+'first_login_redirect_expr'
 
 
-
-def logException(msg, context=None):
-    logger.exception(msg)
-    if context is not None:
-        error_log = getattr(context, 'error_log', None)
-        if error_log is not None:
-            error_log.raising(sys.exc_info())
 
 @implementer(IRedirectAfterLogin)
 class RedirectAfterLoginAdapter(object):
