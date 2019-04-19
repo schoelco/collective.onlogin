@@ -1,4 +1,8 @@
-from setuptools import setup, find_packages
+# -*- coding: utf-8 -*-
+"""Installer for the collective.onlogin  package."""
+
+from setuptools import find_packages
+from setuptools import setup
 import os
 
 version = '1.0'
@@ -6,13 +10,15 @@ version = '1.0'
 setup(name='collective.onlogin',
       version=version,
       description="This package allows the configuration of HTTP redirects "
-          "after user logged in into Plone site.",
+          "after user logs into Plone site.",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from
-      # http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      # https://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
+        "Environment :: Web Environment",
         "Framework :: Plone",
+        "Framework :: Plone :: Addon",
         "Framework :: Plone :: 5.0",
         "Framework :: Plone :: 5.1",
         "Framework :: Plone :: 5.2",
@@ -20,8 +26,9 @@ setup(name='collective.onlogin',
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Operating System :: OS Independent",
         ],
-      keywords='redirect login',
+      keywords='Python Plone redirect login',
       author='Vitaliy Podoba',
       author_email='vitaliy@martinschoel.com',
       url='https://github.com/martinschoel/collective.onlogin',
