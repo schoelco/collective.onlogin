@@ -12,3 +12,4 @@ Changelog
 
 - Initial release compatible with Plone 4.1.
   [vipod]
+
