@@ -1,6 +1,12 @@
-from Products.CMFCore.utils import getToolByName
+# -*- coding: utf-8 -*-
+
+from plone.api.portal import get_tool
+
+
+PROFILE = 'profile-collective.onlogin:uninstall'
+
 
 def uninstall(portal):
-    setup_tool = getToolByName(portal, 'portal_setup')
-    setup_tool.runAllImportStepsFromProfile('profile-collective.onlogin:uninstall')
-    return "Ran all uninstall steps."
+    setup_tool = get_tool('portal_setup')
+    setup_tool.runAllImportStepsFromProfile(PROFILE)
+    return 'Ran all uninstall steps.'

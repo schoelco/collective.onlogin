@@ -1,27 +1,42 @@
-*.py[co]
-
-# Packages
-*.egg
-*.egg-info
-dist
-build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
-.installed.cfg
-
-# Installer logs
-pip-log.txt
-
-# Unit test / coverage reports
 .coverage
-.tox
-
-#Translations
+*.egg-info
+*.log
 *.mo
-
-#Mr Developer
+*.py?
+*.swp
+# dirs
+bin/
+buildout-cache/
+develop-eggs/
+eggs/
+htmlcov/
+include/
+lib/
+local/
+node_modules/
+parts/
+src/*
+dist/*
+test.plone_addon/
+var/
+# files
+.installed.cfg
 .mr.developer.cfg
+Gruntfile.js
+lib64
+log.html
+output.xml
+package.json
+pip-selfcheck.json
+report.html
+.vscode/
+.tox/
+reports/
+# excludes
+!.coveragerc
+!.editorconfig
+!.gitattributes
+!.gitignore
+!.gitkeep
+!.travis.yml
+!src/collective
