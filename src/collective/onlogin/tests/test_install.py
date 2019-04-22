@@ -1,14 +1,20 @@
-import unittest
+# -*- coding: utf-8 -*-
 
-from zope.component import getUtility
 
-from Products.CMFCore.utils import getToolByName
-
+from collective.onlogin import FIRST_ENABLED
+from collective.onlogin import FIRST_EXPR
+from collective.onlogin import IGNORE_FIRST
+from collective.onlogin import IGNORE_REDIRECT
+from collective.onlogin import REDIRECT_ENABLED
+from collective.onlogin import REDIRECT_EXPR
+from collective.onlogin.interfaces import IOnloginLayer
+from collective.onlogin.testing import COLLECTIVE_ONLOGIN_INTEGRATION_TESTING
+from plone.api.portal import get_tool
 from plone.browserlayer import utils
 from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
 
-from collective.onlogin.testing import COLLECTIVE_ONLOGIN_INTEGRATION_TESTING
-from collective.onlogin.interfaces import IOnloginLayer
+import unittest
 
 
 try:
@@ -27,9 +33,9 @@ class InstallTests(unittest.TestCase):
     def test_browserlayer(self):
         # checking if our IOnloginLayer in the list of installed layers
         self.assertIn(IOnloginLayer, utils.registered_layers())
-        
+
     def test_controlpanel(self):
-        cp_tool = getToolByName(self.portal, 'portal_controlpanel')
+        cp_tool = get_tool('portal_controlpanel')
 
         # check if our action is added
         self.assertIn('onlogin', [a.id for a in cp_tool.listActions()])
@@ -45,7 +51,7 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(a.category, 'Products')
         self.assertEqual(a.condition, '')
         self.assertEqual(a.action.text,
-            'string:${portal_url}/@@onlogin-settings')
+                         'string:${portal_url}/@@onlogin-settings')
         self.assertEqual(a.visible, True)
         self.assertIn('Manage portal', a.permissions)
 
@@ -53,20 +59,14 @@ class InstallTests(unittest.TestCase):
         registry = getUtility(IRegistry)
 
         # checking if the all attributes is enabled
-        self.assertEqual(True, registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.first_login_redirect_enabled'))
+        self.assertEqual(True, registry.get(FIRST_ENABLED))
         self.assertEqual(u'string:${portal_url}/@@personal-information',
-            registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.first_login_redirect_expr'))
-        self.assertEqual(True, registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.first_login_redirect_ignore_came_from'))
-        self.assertEqual(True, registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.login_redirect_enabled'))
+                         registry.get(FIRST_EXPR))
+        self.assertEqual(True, registry.get(IGNORE_FIRST))
+        self.assertEqual(True, registry.get(REDIRECT_ENABLED))
         self.assertEqual(u'string:${portal_url}/dashboard',
-            registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.login_redirect_expr'))
-        self.assertEqual(False, registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.login_redirect_ignore_came_from'))
+                         registry.get(REDIRECT_EXPR))
+        self.assertEqual(False, registry.get(IGNORE_REDIRECT))
 
     def test_uninstall_registry(self):
         if get_installer:
@@ -79,34 +79,28 @@ class InstallTests(unittest.TestCase):
         registry = getUtility(IRegistry)
 
         # checking if the all attributes is disabled
-        self.assertEqual(None, registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.first_login_redirect_enabled'))
-        self.assertEqual(None, registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.first_login_redirect_expr'))
-        self.assertEqual(None, registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.first_login_redirect_ignore_came_from'))
-        self.assertEqual(None, registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.login_redirect_enabled'))
-        self.assertEqual(None, registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.login_redirect_expr'))
-        self.assertEqual(None, registry.get('collective.onlogin.interfaces.' \
-            'IOnloginSettings.login_redirect_ignore_came_from'))
+        self.assertEqual(None, registry.get(FIRST_ENABLED))
+        self.assertEqual(None, registry.get(FIRST_EXPR))
+        self.assertEqual(None, registry.get(IGNORE_FIRST))
+        self.assertEqual(None, registry.get(REDIRECT_ENABLED))
+        self.assertEqual(None, registry.get(REDIRECT_EXPR))
+        self.assertEqual(None, registry.get(IGNORE_REDIRECT))
 
         # checking if our IOnloginLayer not in the list of installed layers
         self.assertNotIn(IOnloginLayer, utils.registered_layers())
 
         # checking if our onlogin's skin is disabled
         # check if we got unregistered Directory Views
-        skins_tool = getToolByName(self.portal, 'portal_skins')
+        skins_tool = get_tool('portal_skins')
         self.assertNotIn('collective_onlogin', skins_tool.objectIds())
-        self.assertNotIn("collective_onlogin",
-            skins_tool._getSelections()['Plone Default'].split(','))
-            
+        skinselns = skins_tool._getSelections()['Plone Default'].split(',')
+        self.assertNotIn('collective_onlogin', skinselns)
 
         # checking if our onlogin's control_panel disabled
         # check if our onlogin action is disbranched
-        self.assertNotIn('onlogin', [a.id for a in getToolByName(self.portal,
-            'portal_controlpanel').listActions()])
+        actions = get_tool('portal_controlpanel').listActions()
+        self.assertNotIn('onlogin', [a.id for a in actions])
+
 
 def test_suite():
     suite = unittest.TestSuite()
