@@ -72,7 +72,7 @@ class InstallTests(unittest.TestCase):
         if get_installer:
             self.installer = get_installer(self.portal, self.layer['request'])
         else:
-            self.installer = self.portal.get_tool('portal_quickinstaller')
+            self.installer = get_tool('portal_quickinstaller')
         # uninstall collective.onlogin product
         self.installer.uninstall_product('collective.onlogin')
 
