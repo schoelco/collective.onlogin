@@ -69,12 +69,15 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(False, registry.get(IGNORE_REDIRECT))
 
     def test_uninstall_registry(self):
+        # uninstall collective.onlogin product
         if get_installer:
             self.installer = get_installer(self.portal, self.layer['request'])
+            self.uninstall = self.installer.uninstall_product
+            self.uninstall('collective.onlogin')
         else:
             self.installer = get_tool('portal_quickinstaller')
-        # uninstall collective.onlogin product
-        self.installer.uninstall_product('collective.onlogin')
+            self.uninstall = self.installer.uninstallProducts
+            self.uninstall(['collective.onlogin'])
 
         registry = getUtility(IRegistry)
 
